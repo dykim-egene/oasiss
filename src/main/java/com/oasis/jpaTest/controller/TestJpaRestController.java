@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.oasis.jpaTest.service.MemberService;
 import com.oasis.jpaTest.vo.MemberVo;
 
-@RestController @RequestMapping("memberTest") public class TestJpaRestController { 
+@RestController
+@RequestMapping("memberTest") public class TestJpaRestController { 
 	// 기본형 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
 	
