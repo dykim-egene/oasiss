@@ -5,12 +5,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.oasis.jpaTest.repository.MemberRepository;
 import com.oasis.jpaTest.vo.MemberVo;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class MemberService {
 	@Autowired
 	private MemberRepository memberRepository;
@@ -44,4 +49,14 @@ public class MemberService {
 			memberRepository.save(member);
 		}
 	}
+	
+	private RestTemplate restTemplate;
+	public MemberService(RestTemplateBuilder restTemplateBuilder) {
+		this.restTemplate = restTemplateBuilder.build();
+	}
+	public MemberVo getMember(Long mbrNo) { 
+		MemberVo response = restTemplate.getForObject("/memberTest/" + mbrNo, MemberVo.class); 
+		log.info("getMember2 : " + response); return response; 
+	}
 }
+

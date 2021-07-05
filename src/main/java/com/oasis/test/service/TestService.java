@@ -27,4 +27,8 @@ public class TestService {
 
 		return mapper.selectTest();
 	}
+	
+	public TestVo selectOneMember(String id) {
+		return mapper.selectOneMember(id);
+	}
 }

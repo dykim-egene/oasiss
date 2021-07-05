@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface TestMapper {
 	List<TestVo> selectTest();
+	
+	TestVo selectOneMember(String id);
 }

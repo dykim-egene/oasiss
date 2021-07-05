@@ -59,4 +59,13 @@ public class TestController {
 		return mav;
 	}
 
+	@RequestMapping(value = "/test3")
+	public ModelAndView test3() throws Exception {
+		
+		ModelAndView mav = new ModelAndView("test3");
+		TestVo testList = testService.selectOneMember("oasis");
+		mav.addObject("list", testList);
+		return mav;
+	}	
+	
 }
