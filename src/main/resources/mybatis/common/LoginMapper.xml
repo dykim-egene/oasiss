@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+ 
+     <select id="selectUserById" resultType="com.oasis.common.vo.UserVo">
+        <![CDATA[
+            SELECT
+                *
+            FROM
+                cmm_user
+            WHERE
+                user_email=#{ loginId}
+        ]]>
+    </select>
+    
+    <update id="updateFailureCount">
+        <![CDATA[
+            UPDATE
+                user
+            SET
+                FAILURE_CNT = FAILURE_CNT + 1
+            WHERE
+                cmm_user = #{ loginId}
+        ]]>
+    </update>
+    
+        <select id="checkFailureCount" resultType="Integer">
+        <![CDATA[
+            SELECT
+                FAILURE_CNT
+            FROM
+                cmm_user
+            WHERE
+                user_email=#{ loginId}
+        ]]>
+    </select>
+    
+ </mapper>
