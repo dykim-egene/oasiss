@@ -1,0 +1,51 @@
+1. vo 생성
+ - lombok : Data, AllArgsConstructor, NoArgsConstructor(access = AccessLevel.PROTECTED), @Builder
+2. Mapper(interface) 생성 : Repository, 주요 함수정의(전체조회, ID조회 등)
+ 2.1 연결 XML생성
+3. Service 생성
+4. Controller 생성
+
+5. Security 설정 : 뭐가 막 잘 안되는데...메이븐이 다운로드 안되는 애들이 좀 있다. 특히 spring-boot-starter-security...
+* WebSecurityConfig : WebSecurityConfigurerAdapter상속. 필터링 및 권한설정
+* MvcConfig : URL매핑
+ 5.1 spring-security-core/web/config/ldap/test/taglibs(이것은 jsp에서 csrf를 처리하기위한 라이브러리)
+ 5.2 사용자 VO  
+ 5.3 사용자 Repository(Hibernates) : org.springframework.security.core.userdetails.UserDetails 
+ 5.2 사용자 Service : org.springframework.security.core.userdetails.UserDetailsService
+   - loadUserByUsername(String email)
+   - save(UserVo userVo) : 암호정보 변환(BCryptPasswordEncoder)
+ 5.3 사용자 Controller
+   - signup : save => redirect:/login
+   - logout : SecurityContextLogoutHandler().logout => redirect:/login
+* 에러예외처리 : 
+ - FilterChainProxyAdvice (불필요한 로그 안보이게)   
+ - 에러(정보불일치, 런타임오류)
+ - 로그인 처리 시 SQL오류 발생 -> 에러처리 시 다이렉션 페이지가 루트에 위치해야만 정상작동. /errors/** 이런 형태는 페이지를 찾지 못함.
+ - 기존 에러처리하던 CustomErrorController.java 를 제거하니 /errors/**에 있는 파일이 정상적으로 호출됨...충돌? 오히려 편해짐.
+ - 로그인 전에는 허용되지 않은 요청은 모두 /login으로 리다이렉트. 로그인 후에는 위의 에러상태에 따라 다르게 표기됨. 
+ - 로그인 실패 시 시도횟수 카운트 : MyBatis 서비스를 가져오면 null예외 발생.
+   -> WebSecurityConfig configure failureHandler(new AuthenticationFailureHandler() {} class내에 직접정의하니 정상적으로 LoginService를 불러옴.
+     이를 통해 기존 Mapper방식 + SqlSessionTemplate방식으로 SQL을 실행시키는 방법을 알게됨. component-scan관련 설정 문제가 맞는 듯 함.
+   -> 기존에는 .failureHandler(new LoginFailureHandler()) 별도의 class로 만들어 호출하는 방식. 이 경우 @Resource로 정의한 LoginService가 null
+* SqlSessionTemplate방식
+ - Service Interface
+ - Service Impl
+ - DAO
+* Mapper방식
+ - Service
+ - Mapper
+* Hibernates
+ - UserInfo Entity : 테이블, 필드 정의. ID의 경우 자동증감해야 하는데, MARIA DB의 경우 해당 컬럼(ID)은 INT로 지정하고 기본값을 자동증가로 설정하면 된다.
+ - UserRepository extends JpaRepository<UserInfo, Long> interface 생성
+ - UserService에서 private final UserRepository userRepository; 선언하고 userRepository.findByEmail(email) 이렇게 가져옴.
+   그런데 예외처리가..여기도 화살표가..
+   return userRepository.findByEmail(email)
+	      .orElseThrow(() -> new UsernameNotFoundException((email)));
+
+일단 xml말고 내부설정으로 거의 마무리 한 것 같음.
+로그인 성공처리(sesseion) 로직추가		  
+		  
+		  
+		  
+6. application.properties에서 속성가져오기. 별도의 파일(GlobalConfig)에서 가져오는 것도 테스트
+7. 로그인 디자인 : 검색하면 수도없이 많이 나옴. 
