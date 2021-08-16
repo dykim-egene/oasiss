@@ -12,14 +12,9 @@ import com.oasis.common.vo.UserVo;
 public interface UserMapper{
 	List<UserVo> getUser();
 	
-	UserVo getUserById(String user_id);
+	UserVo selectUserById(String email);
 	
-	void updateFailureCount(String username);
-	
-	int checkFailureCount(String username);
-	
-	void disabledUsername(String username);	
-	
+	int userCount(String email);
 	
 	
 }

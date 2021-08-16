@@ -63,7 +63,7 @@ public class UserInfo implements UserDetails {
   // 사용자의 id를 반환 (unique한 값)
   @Override
   public String getUsername() {
-    return email;
+    return name;
   }
 
   // 사용자의 password를 반환

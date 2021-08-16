@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.oasis.common.service.LoginService;
@@ -49,11 +50,18 @@ public class UserController{
 	}
 
 	@PostMapping("/sign")
-	public String signup(UserVo userVo) { // 회원 추가
+	public @ResponseBody
+		boolean signup(UserVo userVo) { // 회원 추가
+		boolean result = false;
+		log.info("getName>>>>>>>>>>>> " + userVo.getName());
 		log.info("getPasswd>>>>>>>>>>>> " + userVo.getPasswd());
 		log.info("getEmail>>>>>>>>>>>> " + userVo.getEmail());
-		userService.save(userVo);
-		return "redirect:/login";
+		int count = userService.save(userVo).intValue();
+		if(count > 0) {
+			result = true;
+		}
+		log.info("result>>>>>>>>>>>> " + result);
+		return result;
 	}
 /*  
 	@PostMapping(value = "/logoutAA")
@@ -72,14 +80,26 @@ public class UserController{
 		mav.addObject("users", userList);
 		return mav;
 	}
+
+	@RequestMapping("/user/check/{email:.+}")
+	public @ResponseBody
+	boolean isDuplicated(@PathVariable String email) throws Exception {
+		boolean result = false;
+		int count = userService.userCount(email);
+		if(count > 0) {
+			result = true;
+		}
+		log.info("result>>>>>>>>>>>> " + result);
+		return result;
+	}
 	
-	@RequestMapping("/users/{id:.+}")
-	public ModelAndView UserById(@PathVariable String id) throws Exception {
+	@RequestMapping("/users/{email:.+}")
+	public ModelAndView UserById(@PathVariable String email) throws Exception {
 		log.info("userAuthService >>>>>>>>>>>> "+userService);
 		ModelAndView mav = new ModelAndView("user");
-		UserVo userVo = userService.getUserById(id);
-		
-		loginSer.checkFailureCount("bbb");
+		UserVo userVo = userService.getUserById(email);
+		log.info("userVo >>>>>> "+userVo);
+		//loginSer.checkFailureCount("bbb");
 
 		mav.addObject("user", userVo);
 		return mav;

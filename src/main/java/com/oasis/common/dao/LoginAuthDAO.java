@@ -12,18 +12,17 @@ public class LoginAuthDAO {
     @Autowired
     private SqlSessionTemplate sqlSession;
  
-    public UserVo getUserById(String username) {
-        return sqlSession.selectOne("com.oasis.common.mapper.UserMapper.selectUserById", username);
+    public UserVo getUserById(String email) {
+        return sqlSession.selectOne("com.oasis.common.mapper.UserMapper.selectUserById", email);
     }
  
-    public void updateFailureCount(String username) {
-        sqlSession.update("com.oasis.common.mapper.UserMapper.updateFailureCount", username);
+    public void updateFailureCount(String email) {
+        sqlSession.update("com.oasis.common.mapper.UserMapper.updateFailureCount", email);
     }
     
-    public int checkFailureCount(String username) {
-        return sqlSession.selectOne("com.oasis.common.mapper.UserMapper.checkFailureCount", username);
+    public int checkFailureCount(String email) {
+        return sqlSession.selectOne("com.oasis.common.mapper.UserMapper.checkFailureCount", email);
     }
- 
 }
 
 

@@ -48,7 +48,7 @@ import lombok.extern.slf4j.Slf4j;
 		userVo.setPasswd(encoder.encode(userVo.getPasswd()));
 
 		return userRepository.save(
-				UserInfo.builder().email(userVo.getEmail()).auth(userVo.getAuth()).passwd(userVo.getPasswd()).build())
+				UserInfo.builder().email(userVo.getEmail()).name(userVo.getName()).auth(userVo.getAuth()).passwd(userVo.getPasswd()).build())
 				.getId();
 	}	
 	
@@ -59,21 +59,12 @@ import lombok.extern.slf4j.Slf4j;
 		return mapper.getUser();
 	}
 	
-	public UserVo getUserById(String user_id) {
-		return mapper.getUserById(user_id);
+	public UserVo getUserById(String email) {
+		return mapper.selectUserById(email);
 	}
 	
-    public void updateFailureCount(String username) {
-    	log.info("updateFailureCount >> " + username);
-    	mapper.updateFailureCount(username);
+    public int userCount(String email) {
+    	log.info("userCount >> " + email);
+    	return mapper.userCount(email);
     }
- 
-    public int checkFailureCount(String username) {
-    	log.info("checkFailureCount >> " + username);
-        return mapper.checkFailureCount(username);
-    }
- 
-    public void disabledUsername(String username) {
-    	mapper.updateFailureCount(username);
-    }	
 }
