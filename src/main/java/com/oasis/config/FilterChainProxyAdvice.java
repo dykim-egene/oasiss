@@ -9,6 +9,7 @@ import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
+/*불필요한 에러로그(접근경로 문제) SKIP*/
 
 @Slf4j
 @Aspect
