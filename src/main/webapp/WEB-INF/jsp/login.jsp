@@ -15,8 +15,6 @@
 <link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet" type="text/css"/>
 
 <script type="text/javascript" src="/3rd/jquery/jquery-2.2.4.min.js"></script>
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script	src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>	
 <script> 
 //$.ajax({ type: "GET", url: "/testValue", success: (data) => { console.log(data); $('#contents').html(data); } });
 
@@ -26,11 +24,14 @@ $(document).ready(function(){
 		alert("<%=ERRORMSG%>");	
 	}
 	$("#sign").on("click", function(){
-		location.href="/signup";
+		//location.href="/signup";
+	    var uri = "/signup";
+	    window.open(uri, '', 'width=780,height=700,resizable=1,scrollbars=no,status=0,left=10,top=10');  		
 	});
 	
     var csrfToken = "${_csrf.token}";
-    console.log("csrfToken : "+csrfToken);
+    //console.log("csrfToken : "+csrfToken);
+    
 })
 
 </script>
