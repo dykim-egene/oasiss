@@ -14,6 +14,7 @@ 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
 3. Service 생성
 4. Controller 생성
 
+
 5. Security 설정 : 뭐가 막 잘 안되는데...메이븐이 다운로드 안되는 애들이 좀 있다. 특히 spring-boot-starter-security...
 * WebSecurityConfig : WebSecurityConfigurerAdapter상속. 필터링 및 권한설정
 * MvcConfig : URL매핑
